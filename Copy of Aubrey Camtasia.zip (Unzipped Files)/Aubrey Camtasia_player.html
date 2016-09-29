@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="google" value="notranslate" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title></title>
+<link href="skins/overlay/player-min.css" rel="stylesheet" type="text/css" />
+
+<link href='http://fonts.googleapis.com/css?family=Quicksand|Actor' rel='stylesheet' type='text/css'>
+<link href="skins/quiz-min.css" rel="stylesheet" type="text/css" />
+
+<style>
+html, body {
+	background-color: #1a1a1a;
+}
+</style>
+
+</head>
+<body onunload="pageUnload();">
+
+<div id="tscVideoContent"></div>
+
+<script type="text/javascript" src="Aubrey Camtasia.js"></script>
+<script type="text/javascript" src="scormwrapper.js"></script>
+<script src="scripts/jquery-1.7.1.min.js" ></script>
+<script src="scripts/jquery-ui-1.8.15.custom.min.js" ></script>
+<script src="scripts/swfobject.js"></script>
+<script src="scripts/modernizr.js"></script>
+<script src="scripts/handlebars.js"></script>
+<script src="scripts/json2.js"></script>
+<script src="scripts/easyXDM.min.js"></script>
+<script src="scripts/quiz-min.js"></script>
+<script src="scripts/player-min.js"></script>
+<script type="text/javascript">
+    TSC.playerConfiguration.setFlashPlayerSwf("Aubrey Camtasia_controller.swf");
+    TSC.playerConfiguration.setMediaSrc("Aubrey Camtasia.mp4");
+    TSC.playerConfiguration.setXMPSrc("Aubrey Camtasia_config.xml");
+    
+    TSC.playerConfiguration.setAutoHideControls(true);
+    TSC.playerConfiguration.setBackgroundColor("#000000");
+    TSC.playerConfiguration.setCaptionsEnabled(false);
+    TSC.playerConfiguration.setSidebarEnabled(false);
+    
+    TSC.playerConfiguration.setAutoPlayMedia(false);
+    TSC.playerConfiguration.setPosterImageSrc("Aubrey_Camtasia_First_Frame.png");
+    TSC.playerConfiguration.setIsSearchable(false);
+    TSC.playerConfiguration.setEndActionType("stop");
+    TSC.playerConfiguration.setEndActionParam("true");
+    TSC.playerConfiguration.setAllowRewind(-1);
+    
+    
+
+    $(document).ready(function (e) {
+        TSC.mediaPlayer.init("#tscVideoContent");
+		loadPage();
+    });
+</script>
+
+<script id="quiz_setup_template" type="text/x-handlebars-template">
+    <div id="tsc_quiz_setup_container">
+        <h2>{{setupMessage}}</h2>
+        <div class="inputContainer">
+            <div class="inputBlock"><label>{{firstNamePlaceholder}}</label><input type="text" name="first_name" id="first_name" placeholder="{{firstNamePlaceholder}}" size="24" tabindex="1" spellcheck="false" {{#if useAutofocus}}autofocus{{/if}} required></div>
+            <div class="inputBlock"><label>{{lastNamePlaceholder}}</label><input type="text" name="last_name" id="last_name" placeholder="{{lastNamePlaceholder}}" size="24" tabindex="2" spellcheck="false" required></div>
+            <div class="inputBlock"><label>{{emailPlaceholder}}</label><input type="email" name="email_address" id="email_address" placeholder="{{emailPlaceholder}}" tabindex="3" spellcheck="false" size="55" required></div>
+        </div>
+        <button id="tsc_begin_button" tabindex="4" disabled>{{beginButtonText}}</button>
+        <p><a href="#" tabindex="6"  id="skip_control">{{skipControlText}}</a></p>
+    </div>
+</script>
+
+<script id="question_set_confirmation_template" type="text/x-handlebars-template">
+    <div id="tsc_confirmation_container">
+        <div id="tsc_confirm_control" class="largeButton blueButton">{{confirmationText}}</div>
+        <div id="tsc_review_control" class="largeButton">{{reviewText}}</div>
+        <div class="chat-bubble-arrow-border"></div>
+        <div class="chat-bubble-arrow"></div>
+    </div>
+</script>
+
+<script id="question_set_review_confirmation_template" type="text/x-handlebars-template">
+    <div id="tsc_review_confirmation_container">
+        <div id="tsc_review_answers_control" class="largeButton blueButton">{{reviewAnswerText}}</div>
+        <div id="tsc_continue_control" class="largeButton">{{continueText}}</div>
+        <div class="chat-bubble-arrow-border"></div>
+        <div class="chat-bubble-arrow"></div>
+    </div>
+</script>
+
+<script id="question_set_template" type="text/x-handlebars-template">
+    <div id="tsc_quiz_container">
+        <h2>{{questionSetTitle}}</h2>
+        <div id="tsc_quiz_question_count"></div>
+        <div id="tsc_question_set_result_info"></div>
+        <div id="tsc_question"></div>
+        <div id="tsc_answers"></div>
+        <div id="tsc_quiz_controls">
+            <button id="tsc_previous_button">{{previousButtonName}}</button>
+            <button id="tsc_next_button">{{nextButtonName}}</button>
+            <button id="tsc_submit_button">{{submitButtonName}}</button>
+            <button id="tsc_continue_button">{{continueButtonName}}</button>
+        </div>
+        <div class="chat-bubble-arrow-border"></div>
+        <div class="chat-bubble-arrow"></div>
+    </div>
+</script>
+
+<script id="question_count_template" type="text/x-handlebars-template">
+    <span class='tsc_quiz_question_count_current'>{{currentQuestionNumber}}</span><span class='tsc_quiz_question_count_total'>{{prepositionText}} {{totalQuestions}}</span>
+</script>
+
+<script id="question_text_template" type="text/x-handlebars-template">
+    <p class="quiz_question"><span>{{questionNumber}})</span> {{questionText}}</p>
+</script>
+
+<script id="choice_answer_template" type="text/x-handlebars-template">
+    <form>
+        {{#each answers}}
+        <label class="tsc_multiple_choice active_quiz_item"><img src='{{../placeHolderImg}}' class='image_feedback feedback_placeholder' /><input type="radio" name="tsc_multiple_choice" value="{{answerIndex}}" tabindex="{{tabIndex}}" {{#if isChecked}}checked{{/if}} />{{answer}}</label>
+        {{/each}}
+    </form>
+</script>
+
+<script id="fill_answer_template" type="text/x-handlebars-template">
+    <input type="text" id="tsc_text_input" maxlength="140" name="tsc_text_input" value="{{userResponse}}" {{#if useAutofocus}}autofocus{{/if}} />
+</script>
+
+<script id="short_answer_template" type="text/x-handlebars-template">
+    <textarea name="tsc_textarea_input" id="tsc_textarea_input" maxlength="2000" rows="5" {{#if useAutofocus}}autofocus{{/if}}>{{userResponse}}</textarea>
+</script>
+
+
+</body>
+</html>
